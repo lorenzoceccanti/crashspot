@@ -1,5 +1,5 @@
-### CrashSpot
+<h2 align="center"> <b> <i> CrashSpot </i> </b> </h2>
 
-Project for DMML course
+<p align="center"> Project for DMML course </p>
 
 Author: Lorenzo Ceccanti
