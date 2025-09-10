@@ -2,4 +2,6 @@
 
 <p align="center"> Project for DMML course </p>
 
+Under construction.
+
 Author: Lorenzo Ceccanti
