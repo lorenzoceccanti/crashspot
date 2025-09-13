@@ -1,3 +1,5 @@
 /.vscode
 /dataset
 /editedDataset
+/code_excluded_from_git
+/workflow
