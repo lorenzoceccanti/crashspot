@@ -1,0 +1,14 @@
+{
+    "flask_port": 5000,
+    "flask_address": "127.0.0.1",
+    "streamlit_port": 8501,
+    "full_dataset": "dataset/BRASIL_AGGR/accidents_2017_to_2023_english_BRASIL.csv",
+    "clean_dataset": "editedDataset/CLEANED_brasilEnglishAggr.csv",
+    "k_distGraph": 4,
+    "dbscan_minEps": 0.3,
+    "dbscan_stepEps": 0.1,
+    "dbscan_minPtsArr": [2, 3, 4],
+    "optics_maxRadiusArr": [1.0, 1.1, 1.2],
+    "optics_minPtsArr": [3,4],
+    "optics_xiArr": [0.07, 0.10, 0.11, 0.12, 0.13]
+}
