@@ -9,3 +9,4 @@ application/.env
 /application/frontend/pages/__pycache__
 /application/ml/hotspotDetector/__pycache__
 /graphs
+/docs
