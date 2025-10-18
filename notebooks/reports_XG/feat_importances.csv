@@ -1,0 +1,11 @@
+,feature,importance
+3,veichle_type,0.24255477
+5,person_kind,0.17292327
+8,general_cause_of_accident,0.1502398
+2,type_of_accident,0.13435386
+7,general_veichle_brand,0.07455846
+4,veichle_manufacturing_year,0.07207424
+0,state,0.04326694
+1,city,0.03925181
+9,milestone,0.036236063
+6,person_age,0.034540836

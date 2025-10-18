@@ -10,3 +10,4 @@ application/.env
 /application/ml/hotspotDetector/__pycache__
 /graphs
 /docs
+/models

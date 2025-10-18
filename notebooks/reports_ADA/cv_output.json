@@ -1,0 +1,9 @@
+{
+    "time_cv": 1493.2977831363678,
+    "grid_search_best_params": {
+        "clf__learning_rate": 0.6,
+        "clf__n_estimators": 700,
+        "select__k": 10
+    },
+    "grid_search_best_score": 0.599850227462397
+}

@@ -1,0 +1,9 @@
+              precision    recall  f1-score   support
+
+     Injured       0.58      0.59      0.59     79115
+      Severe       0.72      0.64      0.68     79536
+    Unharmed       0.72      0.78      0.75     92158
+
+    accuracy                           0.68    250809
+   macro avg       0.68      0.67      0.67    250809
+weighted avg       0.68      0.68      0.68    250809
