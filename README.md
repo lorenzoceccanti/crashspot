@@ -8,12 +8,11 @@
 Contact Lorenzo Ceccanti via email for obtaining such env file.
 
 - It's required to import an .env file to be included into ./application. The structure of that env file is the following:
-<code>
-FLASK_PORT = your_flask_port
+<code>FLASK_PORT = your_flask_port
 FLASK_ADDRESS = "a_flask_address"
-STREAMLIT_PORT = your_streamlit_port
-</code>
+STREAMLIT_PORT = your_streamlit_port</code>
 
-Under construction.
+
+Readme under construction.
 
 Author: Lorenzo Ceccanti
