@@ -80,6 +80,9 @@ class StateClustering(Geoclustering):
                     if isinstance(perf, str) == False:
                         arr_tuning_results.append(perf)
         
+        if len(arr_tuning_results) == 0:
+            return -1, None
+
         # Selecting the best performances
         tuning_results_df = pd.DataFrame(arr_tuning_results)
         tuning_results_df = tuning_results_df.sort_values(
@@ -91,6 +94,6 @@ class StateClustering(Geoclustering):
         # In that case we inform the frontend and we return the top 3 highest metrics in terms
         # of descending core_outlier_ratios
         if df_returned.shape[0] < 3:
-            return -1, tuning_results_df[-3:]
+            return 1, tuning_results_df[-3:]
         else:
             return 0, df_returned

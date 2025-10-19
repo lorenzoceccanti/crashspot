@@ -91,6 +91,13 @@ def clustering():
                         configloader.get_opticsXiArr())
         hopkins = stateClustering.getHopkins()
         sts, stateClustering_perf = stateClustering.clustering_tuning()
+
+        if sts == -1:
+            response = {
+                "sts": sts
+            }
+            return response, 200
+
         stateClustering.run(minPts = stateClustering_perf.iloc[0,0],
                 max_eps = stateClustering_perf.iloc[0,1],
                 xi = stateClustering_perf.iloc[0,2])
