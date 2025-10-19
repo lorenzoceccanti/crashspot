@@ -58,12 +58,13 @@ class Client:
              response = requests.post(API_URL, json=payload)
              data = response.json()
              
+             sts = data["sts"]
              hopkins = data["hopkins"]
              max_eps = data["max_eps"]
              df_labelled = pd.read_json(io.StringIO(data["dfLabelled"]))
              df_perf = pd.read_json(io.StringIO(data["clusteringPerf"]))
 
-             return hopkins, max_eps, df_labelled, df_perf
+             return sts, hopkins, max_eps, df_labelled, df_perf
         except Exception as e:
             print(f"FLASK connection error: {e}")
             

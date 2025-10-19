@@ -58,7 +58,7 @@ def clustering():
                         configloader.get_dbscanMinPtsArr())
         hopkins = cityClustering.getHopkins()
         knee = cityClustering.knee_heurstic_search()
-        cityClustering_perf = cityClustering.clustering_tuning()
+        sts, cityClustering_perf = cityClustering.clustering_tuning()
         cityClustering.run(eps_km = cityClustering_perf.iloc[0,0],
                                 minPts=cityClustering_perf.iloc[0,1])
         print(f"eps_km: {cityClustering_perf.iloc[0,0]}, minPts: {cityClustering_perf.iloc[0,1]}")
@@ -67,6 +67,7 @@ def clustering():
         # We have to serialize both the dataframe and the clustering 
         # performances as a response to the frontend
         response = {
+            "sts": sts,
             "hopkins": hopkins,
             "max_eps": knee,
             "dfLabelled": cityClustering.get_dfLabelled().to_json(),
@@ -82,13 +83,14 @@ def clustering():
                         configloader.get_opticsMinPtsArr(),
                         configloader.get_opticsXiArr())
         hopkins = stateClustering.getHopkins()
-        stateClustering_perf = stateClustering.clustering_tuning()
+        sts, stateClustering_perf = stateClustering.clustering_tuning()
         stateClustering.run(minPts = stateClustering_perf.iloc[0,0],
                 max_eps = stateClustering_perf.iloc[0,1],
                 xi = stateClustering_perf.iloc[0,2])
         stateClustering.attachLabels()
         stateClustering.add_victims_condition_rank()
         response = {
+            "sts": sts,
             "hopkins": hopkins,
             "max_eps": max_eps,
             "dfLabelled": stateClustering.get_dfLabelled().to_json(),

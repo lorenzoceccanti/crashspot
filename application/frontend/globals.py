@@ -9,6 +9,8 @@ class Handler:
         self.df = df
     def set_clustering_perf(self, df):
         self.df_perf = df
+    def set_sts(self, sts):
+        self.sts = sts
     def set_graph_title(self, title):
         self.graph_title = title
     def set_hopkins_max_eps(self, hopkins, max_eps):
@@ -41,6 +43,8 @@ class Handler:
         return self.df_perf
     def get_clusters_stats(self):
         return self.clusters_stats
+    def get_sts(self):
+        return self.sts
     def get_graph_title(self):
         return self.graph_title
     def get_hopkins_max_eps(self):

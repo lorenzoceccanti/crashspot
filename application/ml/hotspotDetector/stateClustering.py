@@ -86,4 +86,11 @@ class StateClustering(Geoclustering):
             by = ["core_outlier_ratio", "silouette_coefficent", "davies_bouldin_index", "calinski_index"],
             ascending = [True, False, True, False]
         )
-        return tuning_results_df.query("core_outlier_ratio > 1.4")[:3]
+        df_returned = tuning_results_df.query("core_outlier_ratio > 1.4")[:3]
+        # Sometimes it may happen that it's not possible to obtain a good core_outlier_ratio
+        # In that case we inform the frontend and we return the top 3 highest metrics in terms
+        # of descending core_outlier_ratios
+        if df_returned.shape[0] < 3:
+            return -1, tuning_results_df[-3:]
+        else:
+            return 0, df_returned

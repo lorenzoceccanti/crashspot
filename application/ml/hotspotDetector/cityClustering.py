@@ -131,4 +131,8 @@ class CityClustering(Geoclustering):
             by = ["core_outlier_ratio", "silouette_coefficent", "davies_bouldin_index", "calinski_index"],
             ascending = [True, False, True, False]
         )
-        return tuning_results_df.query("core_outlier_ratio > 1.4")[:3]
+        df_returned = tuning_results_df.query("core_outlier_ratio > 1.4")[:3]
+        if df_returned.shape[0] < 3:
+            return -1, tuning_results_df[-3:]
+        else:
+            return 0, df_returned

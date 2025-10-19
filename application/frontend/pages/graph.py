@@ -36,6 +36,8 @@ st.set_page_config(page_title="Clustering results")
 client = Client(st)
 
 st.title("CrashSpot - Clustering results")
+if handler.get_sts() == -1:
+    st.text("Attention. The algorithm detected an high presence of outliers. Results may not be reliable.")
 st.text("Best parameters fit:")
 st.dataframe(handler.get_clustering_perf())
 

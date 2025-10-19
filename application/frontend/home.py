@@ -66,7 +66,8 @@ match granularityOptions:
 
 if granularityOptions != None and causeOfAccidentOptions != None:
     if st.button("Discover hotspots", type="primary"):
-        hopkins, max_eps, df_labelled, df_performance = client.select_clustering_mode(algorithm, citiesOptions, stateOptions, causeOfAccidentOptions)
+        sts, hopkins, max_eps, df_labelled, df_performance = client.select_clustering_mode(algorithm, citiesOptions, stateOptions, causeOfAccidentOptions)
+        handler.set_sts(sts)
         handler.set_dataframe(df_labelled)
         handler.set_clustering_perf(df_performance)
         handler.set_hopkins_max_eps(hopkins, max_eps)
