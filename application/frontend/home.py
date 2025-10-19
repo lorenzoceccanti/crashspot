@@ -68,15 +68,16 @@ if granularityOptions != None and causeOfAccidentOptions != None:
     if st.button("Discover hotspots", type="primary"):
         sts, hopkins, max_eps, df_labelled, df_performance = client.select_clustering_mode(algorithm, citiesOptions, stateOptions, causeOfAccidentOptions)
         handler.set_sts(sts)
-        handler.set_dataframe(df_labelled)
-        handler.set_clustering_perf(df_performance)
-        handler.set_hopkins_max_eps(hopkins, max_eps)
-        if citiesOptions != None:
-            handler.set_graph_title(f"{causeOfAccidentOptions} accidents distribution - City: {citiesOptions}")
-        if stateOptions != None:
-            handler.set_graph_title(f"{causeOfAccidentOptions} accidents distrubtion  - State: {stateOptions}")
-        # Computation of the hotspot score
-        handler.compute_hotspot_score()
+        if sts != -1:
+            handler.set_dataframe(df_labelled)
+            handler.set_clustering_perf(df_performance)
+            handler.set_hopkins_max_eps(hopkins, max_eps)
+            if citiesOptions != None:
+                handler.set_graph_title(f"{causeOfAccidentOptions} accidents distribution - City: {citiesOptions}")
+            if stateOptions != None:
+                handler.set_graph_title(f"{causeOfAccidentOptions} accidents distrubtion  - State: {stateOptions}")
+            # Computation of the hotspot score
+            handler.compute_hotspot_score()
         st.switch_page("pages/graph.py")
 
 if st.button("Quit", type="primary"):

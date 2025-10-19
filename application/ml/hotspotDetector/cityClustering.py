@@ -46,6 +46,10 @@ class CityClustering(Geoclustering):
 
         Geoclustering.calculateRadians(self)
         coords_rad = self.get_arrRadians()
+        
+        # Sometimes we might hava a very few set of coordinates
+        if coords_rad.shape[0] < self.k:
+            self.k = coords_rad.shape[0]
         # For each object, we consider its distance with the k-th nearest neighbor
         neigh = NearestNeighbors(n_neighbors=self.k, metric="haversine")
         neigh.fit(coords_rad)
@@ -70,8 +74,11 @@ class CityClustering(Geoclustering):
         y = kth_km_sorted
         knee = KneeLocator(x, y, curve="convex", direction="decreasing")
         eps = y[knee.knee] if knee.knee is not None else None
-
-        self.maxEps = eps
+        
+        if eps != None:
+            self.maxEps = eps
+        else:
+            self.maxEps = self.minEps + self.stepEps + 0.02
         return eps
     
     def run(self, eps_km, minPts):
@@ -125,6 +132,9 @@ class CityClustering(Geoclustering):
                 if isinstance(perf, str) == False:
                     arr_tuning_results.append(perf)
         
+        if len(arr_tuning_results) == 0:
+            return -1, None
+
         # Selecting the best performances
         tuning_results_df = pd.DataFrame(arr_tuning_results)
         tuning_results_df = tuning_results_df.sort_values(
@@ -133,6 +143,6 @@ class CityClustering(Geoclustering):
         )
         df_returned = tuning_results_df.query("core_outlier_ratio > 1.4")[:3]
         if df_returned.shape[0] < 3:
-            return -1, tuning_results_df[-3:]
+            return 1, tuning_results_df[-3:]
         else:
             return 0, df_returned

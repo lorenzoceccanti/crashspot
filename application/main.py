@@ -59,6 +59,13 @@ def clustering():
         hopkins = cityClustering.getHopkins()
         knee = cityClustering.knee_heurstic_search()
         sts, cityClustering_perf = cityClustering.clustering_tuning()
+
+        if sts == -1:
+            response = {
+                "sts": sts
+            }
+            return response, 200
+
         cityClustering.run(eps_km = cityClustering_perf.iloc[0,0],
                                 minPts=cityClustering_perf.iloc[0,1])
         print(f"eps_km: {cityClustering_perf.iloc[0,0]}, minPts: {cityClustering_perf.iloc[0,1]}")

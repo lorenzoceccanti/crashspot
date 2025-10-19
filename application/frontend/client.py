@@ -59,6 +59,8 @@ class Client:
              data = response.json()
              
              sts = data["sts"]
+             if sts == -1: # in this case the other fields are not returned by the backend, because no cluster exists
+                 return sts, None, None, None, None
              hopkins = data["hopkins"]
              max_eps = data["max_eps"]
              df_labelled = pd.read_json(io.StringIO(data["dfLabelled"]))
