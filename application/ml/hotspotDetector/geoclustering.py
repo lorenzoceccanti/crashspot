@@ -62,6 +62,9 @@ class Geoclustering:
         else:
             n_samples = 50
         # The conversion is necessary since hopkins() expects an ndarray as first parameter
+        # Check: to compute the hopkins metrics we need at least 2 points
+        if dim < 2:
+            return 1
         H = Utility.hopkins(X.to_numpy(), n_samples)
         return H
         
