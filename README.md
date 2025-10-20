@@ -1,6 +1,6 @@
 <h2 align="center"> <b> <i> CrashSpot </i> </b> </h2>
 
-<p align="center"> Project for DMML course </p>
+<p align="center"> Project for DMML course @ DII UNIPI </p>
 
 ## Minimum requirements:
 
