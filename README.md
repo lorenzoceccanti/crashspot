@@ -5,8 +5,8 @@
 ## Minimum requirements:
 
 - A conda environment hosting a Python 3.11.7 instance
-- The package listed in the <code>requirements</code> file. Once you have created a conda Python 3.11.7 environment
-  <code>pip install -r requirements.txt</code>
+- The package listed in the <code>requirements</code> file. Once you have created a conda Python 3.11.7 environment run:
+      <code>pip install -r requirements.txt</code>
 
 ## Suggested requirements
 - In order to correctly visualize the graphs, if you are running the notebooks on Visual Studio Code make sure to have installed the <code> Jupyter Notebook Renderers </code> extension by Microsoft.
