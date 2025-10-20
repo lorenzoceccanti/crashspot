@@ -12,6 +12,8 @@ Contact Lorenzo Ceccanti via email for obtaining such env file.
 FLASK_ADDRESS = "a_flask_address"
 STREAMLIT_PORT = your_streamlit_port</code>
 
+- To retrieve the dataset run the <code> download_dataset </code> script and check for the logs.
+
 - In order to correctly visualize the graphs, if you are running the notebooks on Visual Studio Code make sure to have installed the <code> Jupyter Notebook Renderers </code> extension by Microsoft.
 
 
