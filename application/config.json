@@ -7,5 +7,6 @@
     "dbscan_minPtsArr": [2, 3, 4],
     "optics_maxRadiusArr": [1.0, 1.1, 1.2],
     "optics_minPtsArr": [3,4],
-    "optics_xiArr": [0.07, 0.10, 0.11, 0.12, 0.13]
+    "optics_xiArr": [0.07, 0.10, 0.11, 0.12, 0.13],
+    "classification_model": "xgboost"
 }

@@ -7,7 +7,7 @@ from ml.hotspotDetector.datasetLoader import DatasetLoader
 from ml.hotspotDetector.preprocessing import Preprocessing
 from ml.hotspotDetector.cityClustering import CityClustering
 from ml.hotspotDetector.stateClustering import StateClustering
-from ml.hotspotDetector.configloader import ConfigLoader
+from ml.configloader import ConfigLoader
 from webview import WebView
 
 load_dotenv()

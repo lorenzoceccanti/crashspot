@@ -12,3 +12,4 @@ application/.env
 /docs
 /models
 .env
+/application/ml/__pycache__

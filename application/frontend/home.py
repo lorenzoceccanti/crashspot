@@ -18,14 +18,14 @@ client = Client(st)
 # We have to exploit the onchange callback of the selectbox method
 granularityOptions = st.selectbox(
     label = "Granularity selection:",
-    options=('City', 'State'),
+    options=('Hotspot Detection - City', 'Hotspot Detection - State', 'Accident severity prediction'),
     index=None,
     placeholder="Select:",
 )
 
 # If a choiche between city/state has already been made
 match granularityOptions:
-    case 'City':
+    case 'Hotspot Detection - City':
         cities_list = client.get_cities()
         citiesOptions = st.selectbox(
             label = "Pick a city:",
@@ -44,7 +44,7 @@ match granularityOptions:
             placeholder="Select.."
         )
 
-    case 'State':
+    case 'Hotspot Detection - State':
         state_list = client.get_states()
         stateOptions = st.selectbox(
             label = "Pick a state:",
@@ -62,6 +62,9 @@ match granularityOptions:
             index = None,
             placeholder="Select.."
         )
+    case 'Accident severity prediction':
+        causeOfAccidentOptions = None
+        st.toast("Under-construction")
 
 
 if granularityOptions != None and causeOfAccidentOptions != None:
