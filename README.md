@@ -21,7 +21,9 @@ Contact Lorenzo Ceccanti via email for obtaining such env file.
 FLASK_ADDRESS = "a_flask_address"
 STREAMLIT_PORT = your_streamlit_port</code>
 
-- To retrieve the dataset run the <code> download_dataset </code> script and check for the logs.
+- To retrieve the dataset and the trained models run the <code> download_dataset </code> script and check for the logs.
+
+- If you want to explore the notebooks, please run the ones with a number in the file number first and follow the ordering (first 01, then 02, then 03).
 
 
 
