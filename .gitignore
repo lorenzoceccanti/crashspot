@@ -13,3 +13,4 @@ application/.env
 /models
 .env
 /application/ml/__pycache__
+/application/ml/severityPrediction/__pycache__

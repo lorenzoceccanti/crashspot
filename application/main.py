@@ -1,5 +1,6 @@
 import os
 import threading
+import joblib
 from dotenv import load_dotenv
 from flask import Flask
 from flask import request
@@ -8,6 +9,10 @@ from ml.hotspotDetector.preprocessing import Preprocessing
 from ml.hotspotDetector.cityClustering import CityClustering
 from ml.hotspotDetector.stateClustering import StateClustering
 from ml.configloader import ConfigLoader
+from ml.severityPrediction.manufacturingYearImputer import ManufacturingYearImputer
+from ml.severityPrediction.personSexImputer import PersonSexImputer
+from ml.severityPrediction.frequencySubsetEncoder import FrequencySubsetEncoder
+from ml.severityPrediction.ordinalSubsetEncoder import OrdinalSubsetEncoder
 from webview import WebView
 
 load_dotenv()
@@ -15,6 +20,27 @@ FLASK_PORT = os.getenv('FLASK_PORT')
 
 stop_event = threading.Event()
 app = Flask(__name__)
+# At the beginning we don't load any model, we wait for the selection
+# of the classification model from the frontend to avoid un-useful overhead
+_model = None
+
+def get_model():
+    """ Loads the model from the joblib file into the main memory
+    (even for future and concurrent accesses). Returns -1 if the
+    joblib file isn't found, otherwise the model"""
+    
+    # Reads the model name from the config json file
+    model_name = configloader.get_classificationModel()
+    if not os.path.exists(model_name):
+        print("[ERR] Model file not found")
+        return -1
+    
+    global _model
+    if _model is None:
+        _model = joblib.load(model_name)
+        print("[INFO] Joblib ended the loading of the model..")
+             
+    return _model
 
 @app.route("/crashspot_stop", methods=["POST"])
 def crashspot_stop():
@@ -111,6 +137,16 @@ def clustering():
             "clusteringPerf": stateClustering_perf.to_json()
         }
         return response, 200
+
+@app.route("/selected_features", methods=["GET"])
+def send_selected_features():
+    model = get_model()
+    if model == -1:
+        return "Model not found", 500
+    
+    selected_features = model.named_steps["clf"].feature_names_in_
+    # We return the features to the frontend as a list
+    return {"selected_features": selected_features.tolist()}
 
 def run_flask():
     app.run(host="0.0.0.0", port=FLASK_PORT)

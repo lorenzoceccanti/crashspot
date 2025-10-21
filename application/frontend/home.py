@@ -1,6 +1,7 @@
 import streamlit as st
 st.set_page_config(initial_sidebar_state="collapsed", layout="wide", page_title="CrashSpot")
 import pandas as pd
+import numpy as np
 from client import Client
 from globals import handler
 
@@ -64,6 +65,24 @@ match granularityOptions:
         )
     case 'Accident severity prediction':
         causeOfAccidentOptions = None
+        # Load the test set file (without the classes, they represent real data
+        # about incoming accidents)
+        # uploaded_file = st.file_uploader("Load a CSV file", type=["csv"])
+
+        # if uploaded_file is not None:
+        #     # Get the list of selected features (here call the backend) from the joblib
+        #     # Here we have to send only the test set with the selected features as payload
+        #     # As a response we'll get again the test set records along with the predictions
+        #     # and the predict probas
+        #     df = pd.read_csv(uploaded_file)
+        #     st.write("Test of uploaders:")
+        #     st.dataframe(df)
+        
+        sel_features = client.get_features()
+        if isinstance(sel_features, np.ndarray):
+            print(sel_features)
+        else:
+            st.error('Error. Model not found!')
         st.toast("Under-construction")
 
 

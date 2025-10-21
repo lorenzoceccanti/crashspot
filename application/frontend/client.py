@@ -1,6 +1,7 @@
 import os
 import io
 import pandas as pd
+import numpy as np
 from dotenv import load_dotenv
 import requests
 
@@ -69,4 +70,19 @@ class Client:
              return sts, hopkins, max_eps, df_labelled, df_perf
         except Exception as e:
             print(f"FLASK connection error: {e}")
-            
+
+    def get_features(self):
+        """ Returns to the frontend the list of features selected by the model
+        at fit time. Returns -1 if the model is not found, otherwise an
+        ndarray containing the selected features"""
+        try:
+            API_URL = self.api_address + "/selected_features"
+            response = requests.get(API_URL)
+            if response.status_code == 500:
+                return -1
+            data = response.json()
+            list = data["selected_features"]
+            selected_features = np.array(list)
+            return selected_features
+        except Exception as e:
+            print(f"FLASK connection error: {e}")

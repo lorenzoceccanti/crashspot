@@ -19,6 +19,7 @@ class ConfigLoader:
         self.optics_maxRadiusArr = json.get("optics_maxRadiusArr", -1)
         self.optics_minPtsArr = json.get("optics_minPtsArr", -1)
         self.optics_xiArr = json.get("optics_xiArr", -1)
+        self.classification_model = json.get("classification_model", -1)
     
     def getFullDataset(self):
         return self.full_dataset
@@ -46,3 +47,6 @@ class ConfigLoader:
     
     def get_opticsXiArr(self):
         return self.optics_xiArr
+    
+    def get_classificationModel(self):
+        return self.classification_model

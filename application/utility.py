@@ -99,3 +99,38 @@ class Utility:
             raise Exception('The denominator of the hopkins statistics is null')
         
         return x / (x + y)[0]
+    
+    def sample_years(min_y, q1, med, q3, max_y, n, weights=(0.2, 0.6, 0.2), seed=None):
+        """ This function generates the column veichle_manufacturing_year for those
+        brands that don't have it. The function has to work a group of instances of the
+        same brand."""
+    
+        # Here we are taking the weights object, which is a triple
+        # and we are decomposing it in order to obtain the probabilities of
+        # where to fall in the distribution
+    
+        rng = np.random.default_rng(seed)
+        p_low, p_mid, p_high = weights
+    
+        # If the quartilies are all the same we directly return that year
+        if min_y == max_y:
+            return np.full(n, int(min_y))
+    
+        # u is a ndarray, whose size is n (as the number of instances of the same brand to impute)
+        # each element of the array contains a number between 0 and 1 
+        u = rng.random(n)
+    
+        low  = u < p_low
+        mid  = (u >= p_low) & (u < p_low + p_mid)
+        high = u >= (p_low + p_mid)
+    
+        # The first parameter to be specified in where is a condition
+        # If condition is True, that where returns the second parameter. Otherwise the third paramter
+        # is returned
+    
+        start_year = np.where(low,  min_y, np.where(mid, q1, q3))
+        end_year  = np.where(low,  q1,   np.where(mid, q3, max_y))
+    
+        years = np.floor(rng.uniform(start_year, end_year, size=n)).astype(int)
+        return years
+    
