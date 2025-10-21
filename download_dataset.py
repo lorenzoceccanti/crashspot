@@ -1,7 +1,7 @@
 import os
 import zipfile
 import gdown
-from dotenv import dotenv_values
+from dotenv import dotenv_values, load_dotenv
 
 def load_env():
     env = dotenv_values(".env")
@@ -13,11 +13,14 @@ def load_env():
     links_brasil_extra = [(k,v) for k, v in env.items() if k.startswith(prefix_extra)]
 
     link_brasil_aggr = [(k,v) for k, v in env.items() if k.startswith(prefix_aggr)]
-    
-    return links_brasil_raw, links_brasil_extra, link_brasil_aggr
 
-def unzip(from_folder, to_folder):
-    zip_names = [f for f in os.listdir(from_folder) if os.path.isfile(os.path.join(from_folder, f))]
+    link_model = env.get("MODELS_")
+    
+    return links_brasil_raw, links_brasil_extra, link_brasil_aggr, link_model
+
+def unzip(from_folder, to_folder=None):
+    zip_names = [f for f in os.listdir(from_folder) if os.path.isfile(os.path.join(from_folder, f))
+                 and f.lower().endswith(".zip")]
     to_folder = from_folder + "/" + to_folder
 
     for zip in zip_names:
@@ -45,7 +48,24 @@ def download(link_list, folder):
             return False
     return True
 
-links_brasil_raw, links_brasil_extra, link_brasil_aggr = load_env()
+def download_models(link):
+    dir = "."
+    if not os.path.exists(dir):
+        os.makedirs(dir)
+    
+    try:
+        url = link
+        filename = "models.zip"
+        save_path_zip = dir + "/" + filename
+
+        if not os.path.exists(save_path_zip):
+            gdown.download(url, save_path_zip, quiet=False, fuzzy=True)
+    except Exception as e:
+        print("Model download error. Relaunch the script")
+        return False
+    return True
+
+links_brasil_raw, links_brasil_extra, link_brasil_aggr, link_model = load_env()
 
 no_download_errors1 = download(links_brasil_raw, folder="BRASIL_RAW")
 no_download_errors2 = download(links_brasil_extra, folder="BRASIL_EXTRA")
@@ -55,3 +75,7 @@ if no_download_errors1 and no_download_errors2 and no_download_errors3:
     unzip("./dataset/BRASIL_RAW", "acidentes")
     unzip("./dataset/BRASIL_EXTRA", "acidentes")
     unzip("./dataset/BRASIL_AGGR", ".")
+
+no_model_errors = download_models(link_model)
+if no_model_errors:
+    unzip(".", "./models")
