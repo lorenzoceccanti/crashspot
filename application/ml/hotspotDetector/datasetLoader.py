@@ -32,6 +32,10 @@ class DatasetLoader:
         ]
 
         self.clean_dataset_df = full_dataset_df.drop(df_invalid.index)
+
+        # If the folders don't exists, we create them
+        dir_path = os.path.dirname(self.clean_dataset_path)
+        os.makedirs(dir_path, exist_ok=True)
         self.clean_dataset_df.to_csv(self.clean_dataset_path, index=False, encoding='utf-8')
     
     def loadDataset(self):
