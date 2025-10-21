@@ -1,10 +1,10 @@
 {
-    "time_cv": 1222.0057508945465,
+    "time_cv": 1188.592301607132,
     "grid_search_best_params": {
-        "clf__max_depth": 24,
+        "clf__max_depth": 20,
         "clf__max_features": "log2",
         "clf__n_estimators": 850,
         "select__k": 10
     },
-    "grid_search_best_score": 0.6414143588951806
+    "grid_search_best_score": 0.641731408049282
 }
