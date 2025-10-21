@@ -1,7 +1,7 @@
 import os
 import zipfile
 import gdown
-from dotenv import dotenv_values, load_dotenv
+from dotenv import dotenv_values
 
 def load_env():
     env = dotenv_values(".env")
