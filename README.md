@@ -23,7 +23,7 @@ STREAMLIT_PORT = your_streamlit_port</code>
 
 - To retrieve the dataset and the trained models run the <code> download_dataset </code> script and check for the logs.
 
-- If you want to explore the notebooks, please run the ones with a number in the file name first and follow the ordering (first 01, then 02, then 03).
+- If you want to explore the notebooks, please run the ones with a number in the file name first and follow the ordering (first 01, then 02, and so on).
 
 
 
