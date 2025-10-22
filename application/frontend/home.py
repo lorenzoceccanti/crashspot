@@ -103,12 +103,32 @@ if granularityOptions != None and uploaded_file != None:
         if not isinstance(sel_features, np.ndarray):
             st.error('Error. Model not found!')
         else:
-            X_test_fs = file_df[sel_features]
-            st.dataframe(X_test_fs)
+            X_test = file_df
+            X_test_fs = X_test[sel_features]
+            feature_to_disp = ['date', 'week_day', 'hour', 'city', 'latitude', 'longitude',
+                               'person_age', 'general_veichle_brand', 'type_of_accident']
+            X_test_disp = X_test[feature_to_disp]
             # X_test_fs is what we'll send as payload
             predictions_df = client.classify(X_test_fs)
-            st.dataframe(predictions_df)
-
+            output_df = X_test_disp.join(predictions_df, how='inner')
+            
+            # We add a selection column, at the beginning which is clickable
+            output_df.insert(0, "Select", False)
+            edited_df = st.data_editor(
+                output_df,
+                width='stretch',
+                hide_index=True,
+                column_config={
+                    "Select": st.column_config.CheckboxColumn(
+                        "Select", help="Select one or more rows", default=False
+                    )
+                },
+                disabled=[c for c in output_df.columns if c != "Select"],
+                key="output_editor"
+            )
+            selected_rows = edited_df[edited_df["Select"]]
+            st.write("Righe selezionate:", selected_rows)
+            
 
 if st.button("Quit", type="primary"):
     nav_to("about:blank")
