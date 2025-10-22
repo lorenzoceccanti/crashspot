@@ -69,27 +69,6 @@ match granularityOptions:
         # Load the test set file (without the classes, they represent real data
         # about incoming accidents)
         uploaded_file = st.file_uploader("Load a CSV file", type=["csv"])
-        
-        if uploaded_file is not None:
-            
-            preprocessing = Preprocessing(uploaded_file)
-            file_df = preprocessing.get_df()
-            
-            # Get the list of selected features (here call the backend) from the joblib
-            # Here we have to send only the test set with the selected features as payload
-            # As a response we'll get again the test set records along with the predictions
-            # and the predict probas
-            
-            sel_features = client.get_features()
-            # We expect to receive a ndarray, if we receive something else
-            # it means that there was be a problem with the joblib model
-            if not isinstance(sel_features, np.ndarray):
-                st.error('Error. Model not found!')
-            else:
-                X_test_fs = file_df[sel_features]
-                st.dataframe(X_test_fs)
-                # X_test_fs is what we'll send as payload
-        st.toast("Under-construction")
 
 
 if granularityOptions != None and causeOfAccidentOptions != None:
@@ -108,6 +87,30 @@ if granularityOptions != None and causeOfAccidentOptions != None:
             handler.compute_hotspot_score()
         st.switch_page("pages/graph.py")
 
+if granularityOptions != None and uploaded_file != None:
+    if st.button("Predict", type="primary"):
+        preprocessing = Preprocessing(uploaded_file)
+        file_df = preprocessing.get_df()
+        
+        # Get the list of selected features (here call the backend) from the joblib
+        # Here we have to send only the test set with the selected features as payload
+        # As a response we'll get again the test set records along with the predictions
+        # and the predict probas
+        
+        sel_features = client.get_features()
+        # We expect to receive a ndarray, if we receive something else
+        # it means that there was be a problem with the joblib model
+        if not isinstance(sel_features, np.ndarray):
+            st.error('Error. Model not found!')
+        else:
+            X_test_fs = file_df[sel_features]
+            st.dataframe(X_test_fs)
+            # X_test_fs is what we'll send as payload
+            predictions_df = client.classify(X_test_fs)
+            st.dataframe(predictions_df)
+
+
 if st.button("Quit", type="primary"):
     nav_to("about:blank")
     client.crashspot_stop()
+    st.stop()

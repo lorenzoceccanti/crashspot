@@ -86,3 +86,19 @@ class Client:
             return selected_features
         except Exception as e:
             print(f"FLASK connection error: {e}")
+    
+    def classify(self, X_test_fs):
+        """ Sends the test set to the backend, with the desired features
+        by the model. Returns a dataframe with a pandas index, predicted label
+        and confidence value of the class predicted by the classifier"""
+        try:
+            API_URL = self.api_address + "/classify"
+            payload = {
+                "X_test_fs": X_test_fs.to_json()
+            }
+            response = requests.post(API_URL, json=payload)
+            data = response.json()
+            prediction_df = pd.read_json(io.StringIO(data['prediction_df']))
+            return prediction_df
+        except Exception as e:
+            print(f"FLASK connection error: {e}")
