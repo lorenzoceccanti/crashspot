@@ -100,7 +100,7 @@ class Utility:
         
         return x / (x + y)[0]
     
-    def sample_years(min_y, q1, med, q3, max_y, n, weights=(0.2, 0.6, 0.2), seed=None):
+    def sample_years(self, min_y, q1, med, q3, max_y, n, weights=(0.2, 0.6, 0.2), seed=None):
         """ This function generates the column veichle_manufacturing_year for those
         brands that don't have it. The function has to work a group of instances of the
         same brand."""
