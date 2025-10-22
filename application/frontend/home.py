@@ -69,24 +69,26 @@ match granularityOptions:
         # Load the test set file (without the classes, they represent real data
         # about incoming accidents)
         uploaded_file = st.file_uploader("Load a CSV file", type=["csv"])
+        
         if uploaded_file is not None:
+            
             preprocessing = Preprocessing(uploaded_file)
             file_df = preprocessing.get_df()
-            st.dataframe(file_df)
+            
             # Get the list of selected features (here call the backend) from the joblib
             # Here we have to send only the test set with the selected features as payload
             # As a response we'll get again the test set records along with the predictions
             # and the predict probas
-            # file_df = pd.read_csv(uploaded_file)
-            # sel_features = client.get_features()
-            # # We expect to receive a ndarray, if we receive something else
-            # # it means that there was be a problem with the joblib model
-            # if not isinstance(sel_features, np.ndarray):
-            #     st.error('Error. Model not found!')
-            # else:
-            #     X_test_fs = file_df[sel_features]
-            #     st.dataframe(X_test_fs)
-            #     # X_test_fs is what we'll send as payload
+            
+            sel_features = client.get_features()
+            # We expect to receive a ndarray, if we receive something else
+            # it means that there was be a problem with the joblib model
+            if not isinstance(sel_features, np.ndarray):
+                st.error('Error. Model not found!')
+            else:
+                X_test_fs = file_df[sel_features]
+                st.dataframe(X_test_fs)
+                # X_test_fs is what we'll send as payload
         st.toast("Under-construction")
 
 
