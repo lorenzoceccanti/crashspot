@@ -1,9 +1,11 @@
+import os
 import streamlit as st
 st.set_page_config(initial_sidebar_state="collapsed", layout="wide", page_title="CrashSpot")
 import pandas as pd
 import numpy as np
 from client import Client
 from globals import handler
+from application.utility import Utility
 from application.ml.severityPrediction.preprocessing import Preprocessing
 
 def nav_to(url):
@@ -11,6 +13,16 @@ def nav_to(url):
         <meta http-equiv="refresh" content="0; url='%s'">
     """ % (url)
     st.write(nav_script, unsafe_allow_html=True)
+
+def get_absolute_path(relative_path):
+    current_dir = os.path.dirname(__file__)
+    path = os.path.normpath(os.path.join(current_dir, relative_path))
+    return path
+
+def read_confidence_threshold():
+    path = get_absolute_path("../config.json")
+    utility = Utility()
+    return utility.read_json(path, mode="field", field="predict_proba_threshold")
 
 # Page title
 st.markdown("<h1 style='text-align: center;'><em>CrashSpot</em></h1>", unsafe_allow_html=True)
@@ -118,10 +130,20 @@ if granularityOptions != None and uploaded_file != None:
             # containing the state of the selections that the user is making in the webpage
             # It's the memory state for what is rendered in the frontend
             st.session_state["selection_col"] = [""] * len(output_df)
-            st.session_state["selection_col"][0] = "No intervention"
+            
+            # We initialize some selections depending on the threshold for the model
+            output_df["pre_selection"] = ""
+            threshold = read_confidence_threshold()
+            mask = output_df["confidence"] > threshold
+            output_df.loc[mask & (output_df["predicted"] == "Unharmed"), "pre_selection"] = "No intervention"
+            output_df.loc[mask & (output_df["predicted"] == "Severe"), "pre_selection"] = "Doctor"
+            output_df.loc[mask & (output_df["predicted"] == "Injured"), "pre_selection"] = "Paramedics"
+
+            st.session_state["selection_col"] = output_df["pre_selection"].tolist()
             # We create for later usage a dictionary which maps the pandas index and
             # the choice made for that instance
             st.session_state["selection_result"] = {}
+            output_df.drop('pre_selection', axis=1, inplace=True)
 
 if "prediction_output_df" in st.session_state:
     output_df = st.session_state["prediction_output_df"]
@@ -179,12 +201,14 @@ if "prediction_output_df" in st.session_state:
             "values": selected_values,
         }
 
-    # -- DEBUG COMBOBOX SELECTION --
+
     if st.session_state.get("selection_result"):
         res = st.session_state["selection_result"]
-        st.write("Indici selezionati:", res["indices"])
-        st.write("Valori selezionati:", res["values"])
-        st.dataframe(display_df.loc[res["indices"]], width='stretch')
+        display_df.insert(0, "selection", pd.Series(st.session_state["selection_col"], index=display_df.index))
+        combobox_df = display_df.loc[res["indices"]]
+        st.dataframe(combobox_df)
+        path = get_absolute_path(f"../../testDataset/CHOICES_{uploaded_file.name}")
+        combobox_df.to_csv(path, index=False)
 
 if st.button("Quit", type="primary"):
     nav_to("about:blank")

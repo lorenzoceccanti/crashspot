@@ -62,6 +62,18 @@ def parse_km(x):
     except (ValueError, TypeError):
         return None
 
+# Utility function to convert dates in a uniform format
+def parse_date(x):
+        # Those are all the data formats we could have in the dataset
+        formats = ['%Y-%m-%d', '%d/%m/%Y', '%d/%m/%y']
+        
+        for fmt in formats:
+            try:
+                return pd.to_datetime(x, format=fmt)
+            except ValueError:
+                continue
+        return pd.NaT
+
 class Preprocessing:
 
     def _detect_encoding(self):
@@ -308,6 +320,11 @@ class Preprocessing:
 
         self.df["veichle_manufacturing_year"] = self.df["veichle_manufacturing_year"].astype("Float64")
     
+    def _preprocess_date(self):
+        self.df["date"] = self.df["date"].apply(parse_date)
+        # We want to uniform the format to YYYY-MM-DD
+        self.df["date"] = self.df["date"].dt.strftime("%Y-%m-%d")
+
     def _preprocess_person_age(self):
         self.df.loc[self.df["person_age"] > 125.0, "person_age"] = pd.NA
         self.df["person_age"] = self.df["person_age"].replace(-1.0, pd.NA)
@@ -439,6 +456,7 @@ class Preprocessing:
         self._preprocess_person_age()
         self._preprocess_person_kind()
         self._preprocess_veichle_type()
+        self._preprocess_date()
        
 
         # If we have passed a test-set compliant dataset, we don't require
