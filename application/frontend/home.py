@@ -112,25 +112,80 @@ if granularityOptions != None and uploaded_file != None:
             predictions_df = client.classify(X_test_fs)
             output_df = X_test_disp.join(predictions_df, how='inner')
             
-            # We add a selection column, at the beginning which is clickable
-            output_df.insert(0, "Select", False)
-            edited_df = st.data_editor(
-                output_df,
-                width='stretch',
-                hide_index=True,
-                column_config={
-                    "Select": st.column_config.CheckboxColumn(
-                        "Select", help="Select one or more rows", default=False
-                    )
-                },
-                disabled=[c for c in output_df.columns if c != "Select"],
-                key="output_editor"
-            )
-            selected_rows = edited_df[edited_df["Select"]]
-            st.write("Righe selezionate:", selected_rows)
-            
+            # We save the dataframe in the Streamlit persitent memory (the session state)
+            st.session_state["prediction_output_df"] = output_df
+            # We save also as a session variable a list long as many are the tuple to show
+            # containing the state of the selections that the user is making in the webpage
+            # It's the memory state for what is rendered in the frontend
+            st.session_state["selection_col"] = [""] * len(output_df)
+            st.session_state["selection_col"][0] = "No intervention"
+            # We create for later usage a dictionary which maps the pandas index and
+            # the choice made for that instance
+            st.session_state["selection_result"] = {}
+
+if "prediction_output_df" in st.session_state:
+    output_df = st.session_state["prediction_output_df"]
+
+    display_df = output_df.copy()
+
+    # This block of code guarantees a correct persistence of the ComboBox selection
+    n = len(display_df)
+    # If a selection has already been made, we display it
+    sel_state = st.session_state.get("selection_col", [""] * n)
+    # In particular it might happen that the selection made up so far 
+    # are not complete (most of the times this happens)
+    # At the next page rendering we adjust the list of choices to the correct
+    # lenght: we add white spaces for the selections that are not done yet
+    if len(sel_state) != n:
+        sel_state = (sel_state[:n] + [""] * max(0, n - len(sel_state)))
+    
+    st.session_state["selection_col"] = sel_state
+
+    CHOICES = ["", "No intervention", "Paramedics", "Doctor"]
+
+    with st.form("selection_form", clear_on_submit=False):
+        show_df = display_df.copy()
+        show_df.insert(0, "selection", st.session_state["selection_col"])
+
+        edited = st.data_editor(
+            show_df,
+            width='stretch',
+            hide_index=False,
+            column_config={
+                "selection": st.column_config.SelectboxColumn(
+                    "selection",
+                    options=CHOICES,
+                    default="",
+                    help="Select a value",
+                )
+            },
+            disabled=[c for c in show_df.columns if c != "selection"],
+            key="editor_selection_in_form",
+        )
+
+        submitted = st.form_submit_button("Update choices")
+    
+    if submitted:
+        st.session_state["selection_col"] = edited["selection"].tolist()
+        st.rerun()
+
+    if "selection_col" in st.session_state:
+        sel_series = pd.Series(st.session_state["selection_col"], index=display_df.index)
+        mask = sel_series.ne("")
+        selected_indices = sel_series[mask].index.tolist()
+        selected_values  = sel_series[mask].tolist()
+        st.session_state["selection_result"] = {
+            "indices": selected_indices,
+            "values": selected_values,
+        }
+
+    # -- DEBUG COMBOBOX SELECTION --
+    if st.session_state.get("selection_result"):
+        res = st.session_state["selection_result"]
+        st.write("Indici selezionati:", res["indices"])
+        st.write("Valori selezionati:", res["values"])
+        st.dataframe(display_df.loc[res["indices"]], width='stretch')
 
 if st.button("Quit", type="primary"):
     nav_to("about:blank")
     client.crashspot_stop()
-    st.stop()
