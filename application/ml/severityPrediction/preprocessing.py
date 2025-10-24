@@ -77,13 +77,17 @@ def parse_date(x):
 class Preprocessing:
 
     def _detect_encoding(self):
+        """ Returns -1 if the uploaded CSV file is emtpy, otherwise doesn't return anything"""
         # 1) We read the first 1kb (as bytes) to detect the encoding of the csv file
         bytes_data = self.csv_file.getvalue()
         chardet_result = chardet.detect(bytes_data[:1000])
         encoding = chardet_result['encoding']
+        # Handling situations in which the csv file is empty
+        if encoding is None:
+            self.df = -1
+            return -1
         if encoding == 'ascii':
             encoding = 'utf-8'
-
         # 2) We detect the separator
         text = bytes_data.decode(encoding, errors = 'replace')
         sniffer = csv.Sniffer()
@@ -454,11 +458,13 @@ class Preprocessing:
 
     def __init__(self, csv_file):
         self.csv_file = csv_file
-        self._detect_encoding()
+        sts_encoding = self._detect_encoding()
+        if sts_encoding == -1:
+            return
         self._translate_column_name()
 
-        sts = self._check_existence()
-        if sts == -1:
+        sts_existence = self._check_existence()
+        if sts_existence == -1:
             return
 
         self._translate_week_day_instances()

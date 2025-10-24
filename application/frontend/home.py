@@ -105,7 +105,7 @@ if granularityOptions != None and uploaded_file != None:
         preprocessing = Preprocessing(uploaded_file)
         file_df = preprocessing.get_df()
         if isinstance(file_df, int):
-            st.toast(":red[Please provide a compliant dataset]")
+            st.toast(":red[ERROR. Please provide a compliant dataset]")
             time.sleep(2)
             st.rerun()
         
