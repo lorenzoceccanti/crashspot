@@ -41,6 +41,7 @@ granularityOptions = st.selectbox(
 # If a choiche between city/state has already been made
 match granularityOptions:
     case 'Hotspot Detection - City':
+        uploaded_file = None
         cities_list = client.get_cities()
         citiesOptions = st.selectbox(
             label = "Pick a city:",
@@ -60,6 +61,7 @@ match granularityOptions:
         )
 
     case 'Hotspot Detection - State':
+        uploaded_file = None
         state_list = client.get_states()
         stateOptions = st.selectbox(
             label = "Pick a state:",
