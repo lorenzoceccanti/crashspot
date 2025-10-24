@@ -1,4 +1,5 @@
 import os
+import time
 import streamlit as st
 st.set_page_config(initial_sidebar_state="collapsed", layout="wide", page_title="CrashSpot")
 import pandas as pd
@@ -103,6 +104,10 @@ if granularityOptions != None and uploaded_file != None:
     if st.button("Predict", type="primary"):
         preprocessing = Preprocessing(uploaded_file)
         file_df = preprocessing.get_df()
+        if isinstance(file_df, int):
+            st.toast(":red[Please provide a compliant dataset]")
+            time.sleep(2)
+            st.rerun()
         
         # Get the list of selected features (here call the backend) from the joblib
         # Here we have to send only the test set with the selected features as payload

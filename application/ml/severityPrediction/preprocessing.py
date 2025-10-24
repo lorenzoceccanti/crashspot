@@ -442,10 +442,24 @@ class Preprocessing:
         self.df["km_bin"] = (self.df["km"] // 10) * 10
         self.df['milestone'] = self.df['road_id'].astype("str") + "/" + self.df["km_bin"].astype("int").astype("str")
     
+    def _check_existence(self):
+        # Checks the compliance of the dataset before the pre-processing
+        # If it's not compliant, the dataframe object of the class will be changed with -1
+        columns_to_be_present = ['week_day', 'type_of_accident',
+                                 'veichle_type', 'person_kind', 'veichle_manufacturing_year',
+                                 'person_age', 'person_kind', 'date']
+        if not all(elem in self.df.columns for elem in columns_to_be_present):
+            self.df = -1
+            return -1
+
     def __init__(self, csv_file):
         self.csv_file = csv_file
         self._detect_encoding()
         self._translate_column_name()
+
+        sts = self._check_existence()
+        if sts == -1:
+            return
 
         self._translate_week_day_instances()
         self._translate_type_of_accident()
@@ -462,20 +476,40 @@ class Preprocessing:
         # If we have passed a test-set compliant dataset, we don't require
         # any translation/preprocessing
         if not 'general_cause_of_accident' in self.df.columns:
-            self._translate_cause_of_accident()
-            # Creating the general_cause_of_accident attribute
-            self._create_general_cause()
+            # Then it must exists a column called cause_of_accident
+            if 'cause_of_accident' in self.df_columns:
+                self._translate_cause_of_accident()
+                # Creating the general_cause_of_accident attribute
+                self._create_general_cause()
+            else:
+                self.df = -1
+                return
 
         if not 'general_veichle_brand' in self.df.columns:
-            self._preprocess_veichle_brand()
-            # Creating the general_veichle_brand attribute
-            self._create_general_brand()
+            # Then it must exists a column called veichle_brand
+            if 'veichle_brand' in self.df_columns:
+                self._preprocess_veichle_brand()
+                # Creating the general_veichle_brand attribute
+                self._create_general_brand()
+            else:
+                self.df = -1
+                return
         
         if not 'milestone' in self.df.columns:
-            self._create_milestone()
+            # Then there must exists km and road_id
+            if 'km' in self.df_columns and 'road_in' in self.df_columns:
+                self._create_milestone()
+            else:
+                self.df = -1
+                return
         
         if not 'timeSlot' in self.df.columns:
-            self._create_timeSlot()
+            # Then there must exists hour
+            if 'hour' in self.df_columns:
+                self._create_timeSlot()
+            else:
+                self.df = -1
+                return
         
     def get_df(self):
         return self.df
