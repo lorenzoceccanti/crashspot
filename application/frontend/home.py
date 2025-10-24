@@ -117,7 +117,7 @@ if granularityOptions != None and uploaded_file != None:
         else:
             X_test = file_df
             X_test_fs = X_test[sel_features]
-            feature_to_disp = ['date', 'week_day', 'hour', 'city', 'latitude', 'longitude',
+            feature_to_disp = ['date', 'week_day', 'hour', 'city',
                                'person_age', 'general_veichle_brand', 'type_of_accident']
             X_test_disp = X_test[feature_to_disp]
             # X_test_fs is what we'll send as payload
@@ -206,8 +206,11 @@ if "prediction_output_df" in st.session_state:
         res = st.session_state["selection_result"]
         display_df.insert(0, "selection", pd.Series(st.session_state["selection_col"], index=display_df.index))
         combobox_df = display_df.loc[res["indices"]]
-        st.dataframe(combobox_df)
-        path = get_absolute_path(f"../../testDataset/CHOICES_{uploaded_file.name}")
+        path = get_absolute_path(f"../../choices/") # path of the folder
+        if not os.path.exists(path):
+            os.makedirs(path)
+        path += f"/{uploaded_file.name}" # path of the folder becomes the path of the file
+        st.toast(f":green[Updates saved into]: ./choices/{uploaded_file.name}")
         combobox_df.to_csv(path, index=False)
 
 if st.button("Quit", type="primary"):
