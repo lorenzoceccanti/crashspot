@@ -9,5 +9,5 @@
     "optics_minPtsArr": [3,4],
     "optics_xiArr": [0.07, 0.10, 0.11, 0.12, 0.13],
     "classification_model": "models/xgboost.joblib",
-    "predict_proba_threshold": 0.70
+    "predict_proba_threshold": 0.67
 }
