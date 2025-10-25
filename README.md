@@ -7,6 +7,7 @@
 - A conda environment hosting a Python 3.11.7 instance
 - The package listed in the <code>requirements</code> file. Once you have created a conda Python 3.11.7 environment run:
       <code>pip install -r requirements.txt</code>
+- You must run the Jupter Notebooks inside the notebook folder and follow the ordering before deploying the application (first 01, then 02, and so on).
 
 ## Suggested requirements
 - In order to correctly visualize the graphs, if you are running the notebooks on Visual Studio Code make sure to have installed the <code> Jupyter Notebook Renderers </code> extension by Microsoft.
@@ -22,8 +23,6 @@ FLASK_ADDRESS = "a_flask_address"
 STREAMLIT_PORT = your_streamlit_port</code>
 
 - To retrieve the dataset and the trained models run the <code> download_dataset </code> script and check for the logs.
-
-- If you want to explore the notebooks, please run the ones with a number in the file name first and follow the ordering (first 01, then 02, and so on).
 
 
 
