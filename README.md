@@ -2,6 +2,8 @@
 
 <p align="center"> Project for DMML course @ DII UNIPI </p>
 
+<p align="left"> Author: Lorenzo Ceccanti
+
 ## Minimum requirements:
 
 - A conda environment hosting a Python 3.11.7 instance
@@ -25,8 +27,3 @@ STREAMLIT_PORT = your_streamlit_port</code>
 - To retrieve the dataset and the trained models run the <code> download_dataset </code> script and check for the logs.
 
 - Remember to run the numbered Jupyter Notebooks as instructed before.
-
-### Performance Evaluation:
-
-Readme under construction
-Author: Lorenzo Ceccanti
