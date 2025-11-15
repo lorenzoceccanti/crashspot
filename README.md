@@ -14,7 +14,9 @@
   ```
   pip install -r requirements.txt
   ```
-- You must run the Juptyer Notebooks inside the notebook folder and follow the ordering before deploying the application (first 01, then 02, and so on).
+- You must:
+  1) retrieve the dataset used by running the `download_dataset.py` script
+  2) run the Juptyer Notebooks inside the notebook folder and follow the ordering before deploying the application (first 01, then 02, and so on).
 
 ## Suggested requirements
 - In order to correctly visualize the graphs, if you are running the notebooks on Visual Studio Code make sure to have installed the <code> Jupyter Notebook Renderers </code> extension by Microsoft.
