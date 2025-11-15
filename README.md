@@ -17,7 +17,7 @@
 ## Deployment instructions
 
 - It's required to import an .env file in the root of the project, including the set of links pointing to the source datasets.
-Contact Lorenzo Ceccanti via email for obtaining such env file.
+Contact Lorenzo Ceccanti via email for obtaining such env file or make a request <a href="https://drive.google.com/file/d/1A-AiK2TTzVrAnC9Z8GKEuZ58Qra_ys3S/view?usp=sharing"> here </a>
 
 - It's required to import an .env file to be included into ./application. The structure of that env file is the following:
 <code>FLASK_PORT = your_flask_port
