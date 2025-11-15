@@ -11,7 +11,9 @@
   conda create -n DMMLProject python=3.11.7
   ```
 - The package listed in the <code>requirements</code> file. Once you have created a conda Python 3.11.7 environment run:
-      <code>pip install -r requirements.txt</code>
+  ```
+  pip install -r requirements.txt
+  ```
 - You must run the Jupter Notebooks inside the notebook folder and follow the ordering before deploying the application (first 01, then 02, and so on).
 
 ## Suggested requirements
