@@ -38,4 +38,5 @@ STREAMLIT_PORT = your_streamlit_port</code>
 ## Running the application
 
 - Open a terminal inside the conda environment and execute the command:
-  `run.bat` on Windows systems
+  - `run.bat` on Windows systems
+  - `chmod +x run.sh && ./run.sh` on Unix-based systems
