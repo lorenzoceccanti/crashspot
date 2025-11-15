@@ -8,7 +8,7 @@
 
 - A conda environment hosting a Python 3.11.7 instance. To create it run the following command:
   ```
-        conda create -n DMMLProject python=3.11.7
+  conda create -n DMMLProject python=3.11.7
   ```
 - The package listed in the <code>requirements</code> file. Once you have created a conda Python 3.11.7 environment run:
       <code>pip install -r requirements.txt</code>
