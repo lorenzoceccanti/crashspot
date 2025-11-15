@@ -24,3 +24,4 @@ category_encoders==2.8.1
 joblib==1.5.2
 gdown==5.2.0
 dotenv==0.9.9
+jupyter
