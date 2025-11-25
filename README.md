@@ -2,7 +2,7 @@
 
 <p align="center"> Project for DMML course @ DII UNIPI </p>
 
-Discussed on 25th November 2025
+<p align="right"> Discussed on 25th November 2025
 
 <p align="left"> Author: Lorenzo Ceccanti
 
